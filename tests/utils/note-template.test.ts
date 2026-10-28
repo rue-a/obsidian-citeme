@@ -40,9 +40,9 @@ describe("sanitizeNoteBaseName", () => {
 });
 
 describe("suggestCitationNoteBaseName", () => {
-    it("includes the year when available", () => {
+    it("uses first author last name, title, and year", () => {
         expect(suggestCitationNoteBaseName(result.paper)).toBe(
-            "Deep learning a modern overview (2015)"
+            "LeCun, Deep learning a modern overview (2015)"
         );
     });
 });

@@ -1,8 +1,7 @@
 import type { CitationResult, Paper } from "../api";
 
 export function suggestCitationNoteBaseName(paper: Paper): string {
-    const year = paper.year ? ` (${paper.year})` : "";
-    return sanitizeNoteBaseName(`${paper.title}${year}`);
+    return sanitizeNoteBaseName(buildCitationTitle(paper));
 }
 
 export function sanitizeNoteBaseName(value: string): string {
@@ -85,4 +84,25 @@ function normalizeOrcidId(orcid: string | null): string {
         return match[1];
     }
     return value;
+}
+
+function buildCitationTitle(paper: Paper): string {
+    const authorLastName = firstAuthorLastName(paper.authors);
+    const year = paper.year !== null ? ` (${paper.year})` : "";
+    return `${authorLastName}, ${paper.title}${year}`;
+}
+
+function firstAuthorLastName(authors: string[]): string {
+    if (authors.length === 0) {
+        return "Unknown";
+    }
+    const first = authors[0].trim();
+    if (!first) {
+        return "Unknown";
+    }
+    const parts = first.split(/\s+/).filter(Boolean);
+    if (parts.length === 0) {
+        return "Unknown";
+    }
+    return parts[parts.length - 1].replace(/^[,.;:()\[\]{}]+|[,.;:()\[\]{}]+$/g, "") || "Unknown";
 }
