@@ -147,5 +147,35 @@ export class CiteMeSettingTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					});
 			});
+
+		new Setting(containerEl)
+			.setName("Citation notes folder")
+			.setDesc("Folder used by Insert as new note (supports nested paths)")
+			.addText((text) => {
+				text.setPlaceholder("CiteMe")
+					.setValue(this.plugin.settings.citationNotesFolder)
+					.onChange(async (value) => {
+						this.plugin.settings.citationNotesFolder = value
+							.trim()
+							.replace(/^\/+|\/+$/g, "")
+							.replace(/\/+/g, "/");
+						if (!this.plugin.settings.citationNotesFolder) {
+							this.plugin.settings.citationNotesFolder = "CiteMe";
+						}
+						await this.plugin.saveSettings();
+					});
+			});
+
+		new Setting(containerEl)
+			.setName("Citation note tag")
+			.setDesc("Tag written to citation note metadata")
+			.addText((text) => {
+				text.setPlaceholder("CiteMe")
+					.setValue(this.plugin.settings.citationNoteTag)
+					.onChange(async (value) => {
+						this.plugin.settings.citationNoteTag = value.trim() || "CiteMe";
+						await this.plugin.saveSettings();
+					});
+			});
 	}
 }
