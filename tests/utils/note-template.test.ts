@@ -48,7 +48,7 @@ describe("suggestCitationNoteBaseName", () => {
 });
 
 describe("buildCitationNoteMarkdown", () => {
-    it("builds a markdown note with YAML metadata and abstract body", () => {
+    it("builds a markdown note with YAML metadata including abstract", () => {
         const markdown = buildCitationNoteMarkdown(result, "CiteMe");
 
         expect(markdown).toContain("title: \"Deep learning: a modern overview\"");
@@ -59,9 +59,12 @@ describe("buildCitationNoteMarkdown", () => {
         expect(markdown).not.toContain("orcid:");
         expect(markdown).toContain("doi: \"https://doi.org/10.1038/nature14539\"");
         expect(markdown).toContain("venue: \"Nature\"");
+        expect(markdown).toContain(
+            "abstract: \"A survey of deep learning methods.\""
+        );
         expect(markdown).not.toContain("citation_count:");
         expect(markdown).toContain("citeme_paper_id: \"paper-123\"");
-        expect(markdown).toContain("> *A survey of deep learning methods.*");
+        expect(markdown).not.toContain("> *A survey of deep learning methods.*");
         expect(markdown).not.toContain("# Deep learning: a modern overview");
         expect(markdown).not.toContain("In-text:");
         expect(markdown).not.toContain("Reference:");
@@ -81,7 +84,7 @@ describe("buildCitationNoteMarkdown", () => {
         const markdown = buildCitationNoteMarkdown(noAuthors, "CiteMe");
         expect(markdown).toContain("authors:\n  - Unknown");
         expect(markdown).not.toContain("orcid:");
-        expect(markdown).not.toContain("> *");
+        expect(markdown).not.toContain("abstract:");
     });
 
     it("uses the configured tag in frontmatter", () => {

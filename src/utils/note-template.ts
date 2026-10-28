@@ -46,15 +46,11 @@ export function buildCitationNoteMarkdown(
     if (paper.doi) {
         lines.push(`doi: ${yamlString(doiLink(paper.doi))}`);
     }
+    if (paper.abstract) {
+        lines.push(`abstract: ${yamlString(paper.abstract)}`);
+    }
     lines.push(`citeme_paper_id: ${yamlString(paper.id)}`);
     lines.push("---");
-
-    if (paper.abstract) {
-        lines.push("");
-        for (const line of paper.abstract.split("\n")) {
-            lines.push(`> *${line}*`);
-        }
-    }
 
     return lines.join("\n") + "\n";
 }
