@@ -22,7 +22,6 @@ export function buildCitationNoteMarkdown(
     const lines: string[] = ["---"];
     const normalizedTag = noteTag.trim() || "CiteMe";
 
-    lines.push(`title: ${yamlString(paper.title)}`);
     lines.push("tags:");
     lines.push(`  - ${yamlString(normalizedTag)}`);
     lines.push("authors:");
@@ -37,6 +36,7 @@ export function buildCitationNoteMarkdown(
             lines.push(`  - ${yamlString(displayName)}`);
         }
     }
+    lines.push(`title: ${yamlString(paper.title)}`);
     if (paper.year !== null) {
         lines.push(`year: ${paper.year}`);
     }
@@ -46,10 +46,10 @@ export function buildCitationNoteMarkdown(
     if (paper.doi) {
         lines.push(`doi: ${yamlString(doiLink(paper.doi))}`);
     }
+    lines.push(`citeme_paper_id: ${yamlString(paper.id)}`);
     if (paper.abstract) {
         lines.push(`abstract: ${yamlString(paper.abstract)}`);
     }
-    lines.push(`citeme_paper_id: ${yamlString(paper.id)}`);
     lines.push("---");
 
     return lines.join("\n") + "\n";
